@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>段子</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 400px;
+            margin: 0 auto;
+            background-color: #f3f3f3;
+        }
+
+        .box {
+            width: 400px;
+            height: 18px;
+            border-bottom: 1px solid #e3e3e3;
+        }
+
+        .item {
+            width: 370px;
+            /* height: 500px; */
+            margin: 0 auto;
+            border: 1px solid #e3e3e3;
+            margin-top: 10px;
+            padding: 20px;
+
+        }
+
+        .head .image img {
+            height: 40px;
+            width: 40px;
+            float: left;
+
+        }
+
+        .head .parp {
+            height: 40px;
+            width: 280px;
+            float: left;
+            padding-left: 20px;
+
+        }
+
+        .head .parp h5 {
+            height: 20px;
+            width: 300px;
+            overflow: hidden;
+        }
+
+        .head .parp span {
+
+            font-size: 10px;
+        }
+
+        .body img {
+            /* height: 330px; */
+            width: 330px;
+            padding-top: 10px;
+        }
+
+        .foot {
+            font-size: 8px;
+            padding-top: 10px;
+        }
+
+        .foot .date {
+            float: left;
+        }
+
+        .foot .like {
+            float: right;
+        }
+    </style>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="box"></div>
+            <n-item v-for="item in list" :item="item"></n-item>
+
+        </div>
+
+    </div>
+    </div>
+    <script type="module">
+
+        import component from "./component.js"
+
+        var app = new Vue({
+            el: "#app",
+            data: {
+                list: []
+
+            },
+            components: {
+
+                "n-item": component
+
+            },
+            created() {
+                let url = "https://api.apiopen.top/getJoke?page=3&count=30&type=image";
+                let that = this;
+
+                axios.get(url)
+                    .then(function (response) {
+                        console.log(response);
+
+                        that.list = response.data.result
+
+                        console.log(response.data.result);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>
