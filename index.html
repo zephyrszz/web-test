@@ -126,7 +126,7 @@
         <h1>todolist</h1>
         <div class="input-wrap">
             <input v-model="message" type="text" placeholder="输入待办事项">
-            <button class="send" v-on:click="send">发送</button>
+            <button class="send" v-on:click="send">添加</button>
         </div>
         <div class="list-wrap">
             <div class="box">
@@ -181,13 +181,13 @@
                    
                     if (this.message.trim()) {
                         if (this.list.indexOf(this.message.trim()) > -1) {
-                            alert("重复了，傻逼");
+                            alert("重复了");
                         } else {
                             this.list.push(this.message.trim());
                         }
 
                     } else {
-                        alert("傻逼");
+                        alert("请输入非空内容");
                     }
 
                     this.message = "";
