@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo-List</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .container {
+            width: 600px;
+            /* height: 940px; */
+            margin: 0 auto;
+            padding: 10px 30px;
+            background: #f3f3f3;
+        }
+
+        .input-wrap {
+            padding: 10px 10px 10px 0px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        input {
+            flex-grow: 1;
+            margin-right: 5px;
+            font-size: 20px;
+            border: none;
+            outline: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+        }
+
+        .send {
+            font-size: 20px;
+            color: #fff;
+            background: #128bed;
+            border: none;
+            outline: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .list-wrap {
+            margin-top: 15px;
+        }
+
+        .list-item {
+            color: #333;
+            height: 37px;
+            font-size: 15px;
+            padding: 15px;
+            position: relative;
+
+        }
+
+        .list-item p {
+            /* display: inline-block; */
+            position: absolute;
+            font-size: 20px;
+            width: 330px;
+            background-color: rgb(222, 222, 223);
+            border-radius: 5px;
+            padding: 3px 7px;
+            overflow: hidden;
+        }
+
+        .del {
+            position: absolute;
+            right: 0px;
+            font-size: 16px;
+            color: #fff;
+            background: #d40f0f;
+            border: none;
+            outline: none;
+            padding: 5px 7px;
+            border-radius: 5px;
+        }
+
+        .complete {
+            position: absolute;
+            right: 80px;
+            font-size: 16px;
+            color: #fff;
+            background: #198405;
+            border: none;
+            outline: none;
+            padding: 5px 7px;
+            border-radius: 5px;
+        }
+
+        .box {
+            width: 530px;
+            font-size: 20px;
+            color: white;
+            margin: 30px 0px;
+        }
+
+        .box .para {
+            background-color: #9faab1;
+            border-radius: 5px;
+            padding: 5px 7px;
+        }
+        h1{
+            padding: 10px 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="app">
+        <h1>todolist</h1>
+        <div class="input-wrap">
+            <input v-model="message" type="text" placeholder="输入待办事项">
+            <button class="send" v-on:click="send">发送</button>
+        </div>
+        <div class="list-wrap">
+            <div class="box">
+                <p class="para">待完成</p>
+                <ul>
+                    <li class="list-item" v-for="(item,index) in list">
+                        <p>{{item}}</p>
+                        <button class="complete" @click='complete(index)'>完成任务</button>
+                        <button class="del" @click='del(index)'>删除任务</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="box">
+                <p class="para">完成</p>
+                <ul>
+                    <li class="list-item" v-for="(item,index) in finishList">
+                        <p>{{item}}</p>
+                        <button class="del" @click='dela(index)'>删除任务</button>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+
+        
+
+        var app = new Vue({
+            el: "#app",
+            data: {
+                message: "",
+                list: [],
+                finishList: []
+            },
+            created() {
+                let list = JSON.parse(localStorage.getItem("list"));
+                let finish = JSON.parse(localStorage.getItem("finishList"));
+
+                if(list){
+                    this.list=list;
+                }
+                if(finish){
+                    this.finishList=finish;
+                }
+            },
+            
+            methods: {
+                send() {
+                   
+                    if (this.message.trim()) {
+                        if (this.list.indexOf(this.message.trim()) > -1) {
+                            alert("重复了，傻逼");
+                        } else {
+                            this.list.push(this.message.trim());
+                        }
+
+                    } else {
+                        alert("傻逼");
+                    }
+
+                    this.message = "";
+                    
+                   
+                },
+                del(index) {
+                    this.list.splice(index, 1)
+                },
+                dela(index) {
+                    this.finishList.splice(index, 1)
+                },
+                complete(index) {
+                    let a = this.list.slice(index, index + 1).join()
+                    this.list.splice(index, 1)
+                    console.log(a)
+                    this.finishList.push(a)
+                    console.log(this.finishList)
+                },
+
+               
+            },
+            watch: {
+                    list(newval){
+                        localStorage.setItem("list",JSON.stringify(newval))
+                    },
+                    finishList(newval){
+                        localStorage.setItem("finishList",JSON.stringify(newval))
+                    },
+                },
+
+        });
+    </script>
+</body>
+
+</html>
